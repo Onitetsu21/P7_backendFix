@@ -5,7 +5,7 @@ exports.auth = function(req, res, next) {
   // console.log("req.headers.authorization ==>", req.headers.authorization)
   try {
     
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization.split(' ')[0];
     
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     
@@ -20,7 +20,6 @@ exports.auth = function(req, res, next) {
       next();
     }
   } catch {
-    console.log("ça passe direct au catch")
     res.status(401).json({
       error: new Error('Unauthentify request')
       
