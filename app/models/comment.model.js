@@ -12,11 +12,6 @@ module.exports = (sequelize, Sequelize) => {
       postId: {
         type: Sequelize.INTEGER
       }
-      
-    //   adminmode: {
-    //       type: Sequelize.BOOLEAN,
-    //       defaultValue: true
-    //   }
     });
   
     return Comment;

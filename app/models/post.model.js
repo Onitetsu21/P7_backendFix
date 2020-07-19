@@ -15,10 +15,6 @@ module.exports = (sequelize, Sequelize) => {
       comments: {
         type: Sequelize.STRING
       },
-    //   adminmode: {
-    //       type: Sequelize.BOOLEAN,
-    //       defaultValue: true
-    //   }
     });
   
     return Post;

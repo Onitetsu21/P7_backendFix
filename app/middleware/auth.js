@@ -1,28 +1,18 @@
 const jwt = require('jsonwebtoken');
 
-exports.auth = function(req, res, next) {
-  // console.log("req.body.userId==> ", req.body.userId,);
-  // console.log("req.headers.authorization ==>", req.headers.authorization)
+module.exports = function(req, res, next) {
   try {
-    
-    const token = req.headers.authorization.split(' ')[0];
-    
+    const token = req.headers.Authorization;
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    
     const userId = decodedToken.userId;
-    // console.log("userId===>", userId)
-    // console.log("req.body.userId==>", req.body.userId, "userId ==>", userId );
     if (req.body.userId && req.body.userId !== userId) {
-      
       throw 'invalid user ID ';
-      
     } else {
       next();
     }
   } catch {
     res.status(401).json({
-      error: new Error('Unauthentify request')
-      
+      error: new Error('Unauthentify request') 
     });
   };
 };
