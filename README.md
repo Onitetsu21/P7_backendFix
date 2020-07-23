@@ -1,24 +1,22 @@
 # groupomaniac
 
 ## Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### launch server
+
 ```
-npm run serve
+nodemon server
+or node server
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### migrate db
 
-### Lints and fixes files
 ```
-npm run lint
-```
+cd app
+npx sequelize db:migrate
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```
