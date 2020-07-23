@@ -1,17 +1,17 @@
 module.exports = app => {
     const comments = require("../controllers/comment.controller.js");
-
+    const auth = require("../middleware/auth");
     var router = require("express").Router();
 
-    router.post("/", comments.create);
+    router.post("/", auth, comments.create);
 
-    router.get("/:postId", comments.findAll);
+    router.get("/:postId", auth, comments.findAll);
 
-    router.get("/:id", comments.findOne);
+    router.get("/:id", auth, comments.findOne);
 
-    router.put("/:id", comments.update);
+    router.put("/:id", auth, comments.update);
 
-    router.delete("/:id", comments.delete);
+    router.delete("/:id", auth, comments.delete);
 
-    app.use("/api/comments", router);
+    app.use("/api/comments", auth, router);
 }

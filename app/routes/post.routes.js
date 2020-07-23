@@ -1,17 +1,17 @@
-module.exports = app => {
-    const posts = require("../controllers/post.controller.js");
-    const auth = require("../middleware/auth");
-    var router = require("express").Router();
+module.exports = (app) => {
+  const posts = require("../controllers/post.controller.js");
+  const auth = require("../middleware/auth");
+  var router = require("express").Router();
 
-    router.post("/", posts.create);
+  router.post("/", auth, posts.create);
 
-    router.get("/", posts.findAll);
+  router.get("/", auth, posts.findAll);
 
-    router.get("/:id", posts.findOne);
+  router.get("/:id", auth, posts.findOne);
 
-    router.put("/:id", posts.update);
+  router.put("/:id", auth, posts.update);
 
-    router.delete("/:id", posts.delete);
+  router.delete("/:id", auth, posts.delete);
 
-    app.use("/api/posts", router);
-}
+  app.use("/api/posts", auth, router);
+};
