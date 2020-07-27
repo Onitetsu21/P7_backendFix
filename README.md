@@ -6,17 +6,23 @@
 npm install
 ```
 
-### launch server
 
-```
-nodemon server
-or node server
-```
 
 ### migrate db
 
 ```
-cd app
+Launch WAMP server
+create a database with name : "testdb"
+
+in your terminal : cd app
 npx sequelize db:migrate
 
+```
+
+### launch server
+
+```
+cd ../
+nodemon server
+or node server
 ```

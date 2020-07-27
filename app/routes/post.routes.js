@@ -13,5 +13,5 @@ module.exports = (app) => {
 
   router.delete("/:id", auth, posts.delete);
 
-  app.use("/api/posts", auth, router);
+  app.use("/api/posts", router);
 };

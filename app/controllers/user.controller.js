@@ -66,29 +66,79 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  User.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "User was updated successfully.",
+  bcrypt
+    .hash(req.body.password, 10)
+    .then((hash) => {
+      const user = {
+        name: req.body.name,
+        email: req.body.email,
+        password: hash,
+      };
+      
+      User.update(user, {
+        where: { id: id },
+      })
+        .then((num) => {
+          if (num == 1) {
+           
+            res.send({
+              message: "User was updated successfully.",
+            });
+          } else {
+            res.send({
+              message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
+            });
+          }
+        })
+        .catch((err) => {
+          
+          res.status(500).send({
+            message: "Error updating User with id=" + id,
+          });
         });
-      } else {
-        res.send({
-          message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
-        });
-      }
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating User with id=" + id,
-      });
-    });
+    .catch((error) => res.status(500).json({ error }));
+    
 };
 
+
+// exports.update = (req, res) => {
+//   const id = req.params.id;
+//   bcrypt
+//     .hash(req.body.password, 10)
+//     .then((hash) => {
+//       const user = {
+//         name: req.body.name,
+//         email: req.body.email,
+//         password: hash,
+//       };
+//       User.update(user, {
+//         where: { id: id },
+//       })
+//         .then((num) => {
+//           if (num == 1) {
+//             res.send({
+//               message: "User was updated successfully.",
+//             });
+//           } else {
+//             res.send({
+//               message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
+//             });
+//           }
+//         })
+//         .catch((err) => {
+//           res.status(500).send({
+//             message: "Error updating User with id=" + id,
+//           });
+//         });
+      
+//     };
+//     .catch((error) => res.status(500).json({ error }));
+  
+
+
 exports.delete = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id
   User.destroy({
     where: { id: id },
   })

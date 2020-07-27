@@ -13,5 +13,5 @@ module.exports = app => {
 
     router.delete("/:id", auth, comments.delete);
 
-    app.use("/api/comments", auth, router);
+    app.use("/api/comments", router);
 }

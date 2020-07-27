@@ -2,10 +2,10 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "groupodb",
-    "host": "localhost",
-    "port": "3308",
-    "dialect": "mysql"
+    "database": "testdb",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port": "3308"
   },
   "test": {
     "username": "root",

@@ -12,7 +12,7 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize("groupodb", "root", null, {
+  sequelize = new Sequelize("testdb", "root", null, {
     host: "localhost",
     port: "3308",
     dialect: "mysql",
