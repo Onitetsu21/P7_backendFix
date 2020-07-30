@@ -14,42 +14,41 @@ exports.create = (req, res) => {
     });
     return;
   }
-  let email = req.body.email;
+  let emailExist = false;
+  const email = req.body.email;
   User.findOne({ where: email == email })
-    .then((user) => {
-      if (user) {
-        res.status(402).send({
-          message: "Adresse email déjà inscrite!",
-        });
-      } else {
-        bcrypt
-          .hash(req.body.password, 10)
-          .then((hash) => {
-            const user = {
-              name: req.body.name,
-              email: req.body.email,
-              password: hash,
-            };
-            User.create(user)
-              .then((data) => {
-                res.send(data);
-              })
-              .catch((err) => {
-                res.status(500).send({
-                  message:
-                    err.message ||
-                    "Some error occurred while creating the user.",
-                });
-              });
-          })
-          .catch((error) => res.status(500).json({ error }));
-      }
+    .then(() => {
+      emailExist = true;
+      return;
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving User with email=" + email,
-      });
+    .catch(() => {
+      emailExist = false;
+      return;
     });
+  if (emailExist == false) {
+    bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => {
+        const user = {
+          name: req.body.name,
+          email: req.body.email,
+          password: hash,
+        };
+        User.create(user)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the user.",
+            });
+          });
+      })
+      .catch((error) => res.status(500).json({ error }));
+  } else {
+    res.status(400).json({ message: "Email dejà existant" });
+  }
 };
 
 exports.findAll = (req, res) => {
