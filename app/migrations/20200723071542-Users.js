@@ -16,6 +16,7 @@ module.exports = {
       email: {
         type: DataTypes.STRING(255),
         allowNull: true,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING(255),

@@ -1,8 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const helmet = require("helmet");
+
+var xss = require("xss-clean");
 
 const app = express();
+
+// Helmet helps to secure your Express apps by setting various HTTP headers
+app.use(helmet());
+
+// xss-clean : sanitize user input coming from POST body, GET queries, and url params
+app.use(xss());
 
 var corsOptions = {
   origin: "http://localhost:8081",

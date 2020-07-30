@@ -14,26 +14,42 @@ exports.create = (req, res) => {
     });
     return;
   }
-  bcrypt
-    .hash(req.body.password, 10)
-    .then((hash) => {
-      const user = {
-        name: req.body.name,
-        email: req.body.email,
-        password: hash,
-      };
-      User.create(user)
-        .then((data) => {
-          res.send(data);
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while creating the user.",
-          });
+  let email = req.body.email;
+  User.findOne({ where: email == email })
+    .then((user) => {
+      if (user) {
+        res.status(402).send({
+          message: "Adresse email déjà inscrite!",
         });
+      } else {
+        bcrypt
+          .hash(req.body.password, 10)
+          .then((hash) => {
+            const user = {
+              name: req.body.name,
+              email: req.body.email,
+              password: hash,
+            };
+            User.create(user)
+              .then((data) => {
+                res.send(data);
+              })
+              .catch((err) => {
+                res.status(500).send({
+                  message:
+                    err.message ||
+                    "Some error occurred while creating the user.",
+                });
+              });
+          })
+          .catch((error) => res.status(500).json({ error }));
+      }
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving User with email=" + email,
+      });
+    });
 };
 
 exports.findAll = (req, res) => {
@@ -74,13 +90,12 @@ exports.update = (req, res) => {
         email: req.body.email,
         password: hash,
       };
-      
+
       User.update(user, {
         where: { id: id },
       })
         .then((num) => {
           if (num == 1) {
-           
             res.send({
               message: "User was updated successfully.",
             });
@@ -91,54 +106,16 @@ exports.update = (req, res) => {
           }
         })
         .catch((err) => {
-          
           res.status(500).send({
             message: "Error updating User with id=" + id,
           });
         });
     })
     .catch((error) => res.status(500).json({ error }));
-    
 };
 
-
-// exports.update = (req, res) => {
-//   const id = req.params.id;
-//   bcrypt
-//     .hash(req.body.password, 10)
-//     .then((hash) => {
-//       const user = {
-//         name: req.body.name,
-//         email: req.body.email,
-//         password: hash,
-//       };
-//       User.update(user, {
-//         where: { id: id },
-//       })
-//         .then((num) => {
-//           if (num == 1) {
-//             res.send({
-//               message: "User was updated successfully.",
-//             });
-//           } else {
-//             res.send({
-//               message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
-//             });
-//           }
-//         })
-//         .catch((err) => {
-//           res.status(500).send({
-//             message: "Error updating User with id=" + id,
-//           });
-//         });
-      
-//     };
-//     .catch((error) => res.status(500).json({ error }));
-  
-
-
 exports.delete = (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
   User.destroy({
     where: { id: id },
   })

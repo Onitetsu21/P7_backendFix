@@ -13,6 +13,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "helmet": "^3.23.3",
     "json": "^9.0.6",
     "jsonwebtoken": "^8.5.1",
     "localStorage": "^1.0.4",
@@ -20,7 +21,8 @@
     "node": "^14.4.0",
     "node-localstorage": "^2.1.6",
     "sequelize": "^5.21.12",
-    "tedious": "^8.3.0"
+    "tedious": "^8.3.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "sequelize-auto": "^0.5.3",
