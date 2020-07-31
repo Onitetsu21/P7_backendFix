@@ -12,11 +12,7 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize("testdb", "root", null, {
-    host: "localhost",
-    port: "3308",
-    dialect: "mysql",
-  });
+  sequelize = new Sequelize(config);
 }
 
 fs.readdirSync(__dirname)
