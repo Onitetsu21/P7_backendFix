@@ -22,11 +22,6 @@ module.exports = {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      isAuth: {
-        type: DataTypes.INTEGER(1),
-        allowNull: true,
-        defaultValue: 0,
-      },
       admin: {
         type: DataTypes.INTEGER(1),
         allowNull: true,
