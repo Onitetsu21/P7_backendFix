@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
           model: {
             tableName: "comments",
           },
-          key: "id",
+          key: "content",
         },
       },
       createdAt: {
