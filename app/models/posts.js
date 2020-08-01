@@ -28,16 +28,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      comments: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-        references: {
-          model: {
-            tableName: "comments",
-          },
-          key: "id",
-        },
-      },
+
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
