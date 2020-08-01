@@ -1,5 +1,5 @@
 {
-  "production": {
+  "development": {
     "username": "root",
     "password": null,
     "database": "testdb",

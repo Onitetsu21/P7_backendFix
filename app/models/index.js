@@ -4,11 +4,20 @@ const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
-const env = "production";
+const env = process.env.NODE_ENV || "development";
 const config = require("../config/config.json")[env];
 const db = {};
+// Option 1: Passing parameters separately const sequelize = new Sequelize('database', 'username', 'password', { host: 'localhost', dialect: /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */ });
 
-let sequelize = new Sequelize(config);
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: "localhost",
+    dialect: "mysql",
+  }
+);
 
 fs.readdirSync(__dirname)
   .filter((file) => {
