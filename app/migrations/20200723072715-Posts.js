@@ -28,7 +28,7 @@ module.exports = {
         allowNull: true,
       },
       comments: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.INTEGER(11),
         allowNull: true,
         references: {
           model: {
