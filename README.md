@@ -21,7 +21,7 @@ Launch your server
 Create a database with the name in your config (default : "testdb"(must be the same name of the database name in config.json)), encoding : "utf8_general_ci"
 
 in your terminal : cd app
-npx sequelize db:migrate
+npx sequelize-cli db:migrate
 ```
 
 ### launch server
