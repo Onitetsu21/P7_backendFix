@@ -25,7 +25,10 @@ module.exports = {
             tableName: "users",
           },
           key: "id",
+
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       postId: {
         type: DataTypes.INTEGER(11),
@@ -36,6 +39,8 @@ module.exports = {
           },
           key: "id",
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       createdAt: {
         type: DataTypes.DATE,

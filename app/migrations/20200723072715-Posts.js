@@ -22,6 +22,8 @@ module.exports = {
           },
           key: "id",
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       userName: {
         type: DataTypes.STRING(255),
