@@ -28,7 +28,7 @@ module.exports = {
 
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
       },
       postId: {
         type: DataTypes.INTEGER(11),
@@ -40,7 +40,7 @@ module.exports = {
           key: "id",
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         type: DataTypes.DATE,

@@ -48,8 +48,13 @@ ORDER BY posts.createdAt ASC `, { type: seq.QueryTypes.SELECT})
 };
 
 exports.findOne = (req, res) => {
-  const id = req.params.id;
-  Post.findByPk(id)
+  const postId = req.params.id;
+  seq.query(`
+  SELECT users.name AS userName, posts.userId, posts.id, posts.content, DATE_FORMAT(posts.createdAt, \"%d-%m-%Y à %H:%i\") 
+    AS createdAt 
+    FROM posts 
+    INNER JOIN users ON users.id = posts.userId 
+    WHERE posts.id = ?`, { type: seq.QueryTypes.SELECT, replacements: [postId] })
     .then(data => {
       res.send(data);
     })

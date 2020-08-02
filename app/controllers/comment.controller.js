@@ -32,10 +32,10 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const content = req.params.postId;
   seq.query(`
-    SELECT  comments.id, posts.id AS postId, comments.userName, comments.content, DATE_FORMAT(comments.createdAt, \"%d-%m-%Y à %H:%i"\) 
+    SELECT  comments.id, posts.id AS postId, comments.userId, comments.userName, comments.content, DATE_FORMAT(comments.createdAt, \"%d-%m-%Y à %H:%i"\) 
     AS createdAt 
     FROM comments 
-    INNER JOIN posts ON posts.id = comments.postId
+    INNER JOIN posts ON posts.id = comments.postId 
     WHERE comments.postId = ? 
     ORDER BY comments.createdAt DESC`, { type: seq.QueryTypes.SELECT, replacements: [content]}) 
   .then(data => {
@@ -52,7 +52,12 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Post.findByPk(id)
+  seq.query(`
+  SELECT users.name AS userName, comments.userId, comments.id, comments.content, DATE_FORMAT(posts.createdAt, \"%d-%m-%Y à %H:%i\") 
+    AS createdAt 
+    FROM posts 
+    INNER JOIN users ON users.id = comments.userId 
+    WHERE comments.id = ?`, { type: seq.QueryTypes.SELECT, replacements: [id] })
     .then(data => {
       res.send(data);
     })
