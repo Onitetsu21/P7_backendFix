@@ -13,7 +13,7 @@ The database data can be configured in app/config/config.json.
 The default configuration is =
 name : "root", password : "", database: "testdb" port: "3308", host: "127.0.0.1", dialect : "Mysql"
 
-Defaut environement is "production", For change it :,
+Defaut environement is "development", For change it :,
 You can change the name of it in config.json AND index.js (on "env" constant)
 OR you can add an environement in config.json, and replace it in index.js (const env)
 
