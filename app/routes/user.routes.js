@@ -15,6 +15,7 @@ module.exports = app => {
 
     router.post("/login", users.login);
     
+    router.post("/confirmpass", users.confirmPassword);
 
     app.use("/api/users", router);
 }

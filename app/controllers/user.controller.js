@@ -81,15 +81,20 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  bcrypt
+  
+  console.log("req.body.password", req.body.password)
+ 
+
+  if (req.body.changePassword == true){
+    bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
       const user = {
         name: req.body.name,
         email: req.body.email,
-        password: hash,
-      };
-
+        password: hash
+      }
+      console.log("user==>", user)
       User.update(user, {
         where: { id: id },
       })
@@ -110,8 +115,38 @@ exports.update = (req, res) => {
           });
         });
     })
-    .catch((error) => res.status(500).json({ error }));
-};
+    .catch((error) => {
+      return res.status(500).send({ message: "cryptage impossible" }) 
+    });
+  }else{
+    const user = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    }
+    console.log("user==>", user)
+    User.update(user, {
+      where: { id: id },
+    })
+      .then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "User was updated successfully.",
+          });
+        } else {
+          res.send({
+            message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error updating User with id=" + id,
+        });
+      });
+  }
+      
+}
 
 exports.delete = (req, res) => {
   const id = req.params.id;
@@ -152,10 +187,13 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (!user) {
+        
         return res.status(401).json({ error: "Utilisateur non trouvé !" });
+        
       }
       bcrypt
         .compare(req.body.password, user.password)
@@ -172,11 +210,46 @@ exports.login = (req, res) => {
             }),
           });
         })
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) => {res.status(500).json({ error }) })
+        
     })
     .catch((err) => {
+      console.log("ça bloque ici")
       res.status(500).send({
         message: "Error retrieving User with email=" + user.email,
       });
     });
-};
+  };
+
+  exports.confirmPassword = (req, res) => {
+    console.log("req.body.password ==>", req.body.password)
+    const _id = req.body.userId;
+    
+    console.log('id ==>', _id)
+    User.findOne({ where : {id : _id} })
+      .then((user) => {
+        if (!user) {
+          return res.status(401).json({ error: "Utilisateur non trouvé !" });
+        }
+        bcrypt
+          .compare(req.body.password, user.password)
+          .then((valid) => {
+            if (!valid) {
+              console.log("valid ==>",user.password)
+              console.log("req.body.password ==>", req.body.password)
+              return res.status(401).json({ message: "Mot de passe invalide" });
+            }
+            return res.status(200).json({success : true })
+          })
+          .catch((err) => {
+            return res.status(401).send({
+              message: "Mauvais mot de passe",
+            });
+          });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          message: "Error retrieving User with email",
+        });
+      });
+  }

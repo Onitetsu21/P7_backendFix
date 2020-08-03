@@ -32,14 +32,16 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const content = req.params.postId;
   seq.query(`
-    SELECT  comments.id, posts.id AS postId, comments.userId, comments.userName, comments.content, DATE_FORMAT(comments.createdAt, \"%d-%m-%Y à %H:%i"\) 
-    AS createdAt 
+    SELECT  comments.id, posts.id AS postId, comments.userId, users.name AS userName, comments.content, DATE_FORMAT(comments.createdAt, \"%d-%m-%Y à %H:%i"\) 
+    AS createdAt, DATE_FORMAT(comments.updatedAt, \"%d-%m-%Y à %H:%i\") 
+    AS updatedAt 
     FROM comments 
-    INNER JOIN posts ON posts.id = comments.postId 
+    INNER JOIN posts ON posts.id = comments.postId
+    INNER JOIN users ON users.id = comments.userId 
     WHERE comments.postId = ? 
     ORDER BY comments.createdAt DESC`, { type: seq.QueryTypes.SELECT, replacements: [content]}) 
   .then(data => {
-    console.log(data)
+    console.log("data==>", data)
     res.send(data);
   })
   .catch(err => {
@@ -53,13 +55,15 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
   seq.query(`
-  SELECT users.name AS userName, comments.userId, comments.id, comments.content, DATE_FORMAT(posts.createdAt, \"%d-%m-%Y à %H:%i\") 
-    AS createdAt 
-    FROM posts 
+  SELECT users.name AS userName, comments.userId, comments.id, comments.content, DATE_FORMAT(comments.createdAt, \"%d-%m-%Y à %H:%i\") 
+    AS createdAt, DATE_FORMAT(comments.updatedAt, \"%d-%m-%Y à %H:%i\") 
+    AS updatedAt 
+    FROM comments 
     INNER JOIN users ON users.id = comments.userId 
     WHERE comments.id = ?`, { type: seq.QueryTypes.SELECT, replacements: [id] })
     .then(data => {
       res.send(data);
+      console.log("data==>", data)
     })
     .catch(err => {
       res.status(500).send({

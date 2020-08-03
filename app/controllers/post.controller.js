@@ -31,7 +31,8 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
 seq.query(`
 SELECT posts.id, users.name AS userName, posts.content, DATE_FORMAT(posts.createdAt, \"%d-%m-%Y à %H:%i\") 
-AS createdAt 
+AS createdAt, DATE_FORMAT(posts.updatedAt, \"%d-%m-%Y à %H:%i\") 
+AS updatedAt  
 FROM posts 
 INNER JOIN users ON users.id = posts.userId 
 ORDER BY posts.createdAt ASC `, { type: seq.QueryTypes.SELECT}) 
@@ -51,7 +52,8 @@ exports.findOne = (req, res) => {
   const postId = req.params.id;
   seq.query(`
   SELECT users.name AS userName, posts.userId, posts.id, posts.content, DATE_FORMAT(posts.createdAt, \"%d-%m-%Y à %H:%i\") 
-    AS createdAt 
+    AS createdAt, DATE_FORMAT(posts.updatedAt, \"%d-%m-%Y à %H:%i\") 
+    AS updatedAt 
     FROM posts 
     INNER JOIN users ON users.id = posts.userId 
     WHERE posts.id = ?`, { type: seq.QueryTypes.SELECT, replacements: [postId] })
@@ -72,6 +74,7 @@ exports.update = (req, res) => {
   })
   .then(num => {
     if (num == 1) {
+      console.log(num)
         res.send({
         message: "Post was updated successfully."
         });
